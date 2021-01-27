@@ -441,8 +441,7 @@
                             "<a class=\"cinema-name\">" + obj.cinemaList[i].cinema_name + "</a>" +
                             "<p class=\"cinema-address\">地址：" + obj.cinemaList[i].cinema_address + "</p>" +
                         "</div>" +
-                        "<div class=\"buy-btn\">" +
-                            "" + obj.cinemaList[i].cinema_id + "<a href=\"selectSeat?cinema_id=&movie_id=\">选座购票</a>" + obj.data.movie_id + "" +
+                        "<div class=\"buy-btn\">" +  "<a href=\"selectSeat?cinema_id=" + obj.cinemaList[i].cinema_id + "&movie_id=" + obj.data.movie_id + "\">选座购票</a>"  + "" +
                         "</div>" +
                         "<div class=\"price\">" +
                             "<span class=\"rmb red\">￥</span>" +

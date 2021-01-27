@@ -344,7 +344,7 @@
                         htmlOn =
                         "<li>" +
                             "<div class=\"movie-item\">" +
-                                "<a href=\"movieDetail?movie_id=" + obj.data[i].movie_id + "\"" + "target=\"_blank\" data-act=\"playingMovie-click\" data-val=\"" + obj.data1[i].movie_id + "\">" +
+                                "<a href=\"movieDetail?movie_id=" + obj.data1[i].movie_id + "\"" + "target=\"_blank\" data-act=\"playingMovie-click\" data-val=\"" + obj.data1[i].movie_id + "\">" +
                                     "<div class=\"movie-poster\" style=\"cursor:default;\">" +
                                         "<img id=\"moive_picture\" src=\"" + obj.data1[i].movie_picture  + "\">" +
                                         "<div class=\"movie-overlay movie-overlay-bg\">" +

@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8"%>
+         pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,14 +14,14 @@
     <script src="./static/js/Api.js"></script>
     <link rel="icon" type="image/x-icon" href="./static/images/logo.ico"/>
     <link href="./static/css/login.css" rel="stylesheet">
-
-    <title>鹰眼电影-登录注册</title>
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+    <title>小站电影-登录注册</title>
 </head>
 <body>
 <!-- ------------------------------------------------------------------- -->
 <div class="screen">
-<%--    <img class="big_logo"><br/>--%>
-    <label class="title">鹰 眼 电 影</label><br/>
+    <%--    <img class="big_logo"><br/>--%>
+    <label class="title">小 站 电 影</label><br/>
 </div>
 <!-- 登录页 -->
 <div class="content" style="float: left;">
@@ -49,7 +49,7 @@
                 <label class="login_error"></label>
             </div>
             <div>
-                <input type="button" value="登录" class="btn btn-success login_btn" onclick="loginbtn()"/>
+                <input type="button" value="登录" class="btn btn-success login_btn" v-on:click="loginbtn()"/>
             </div>
             <div>
                 <label class="login_version">@版权所有</label>
@@ -76,14 +76,14 @@
                 <div>
                     <label>验证码</label><br/>
                     <input id="Test" type="text"/>
-                    <input id="TestNum" type="button"/>
+                    <input id="TestNum" type="button" v-on:click="TestNum()"/>
                 </div>
             </div>
             <div class="re_error">
                 <label class="register_error"></label>
             </div>
             <div>
-                <input type="button" value="注册" class="btn btn-warning register_btn" onclick="registerbtn()"/>
+                <input type="button" value="注册" class="btn btn-warning register_btn" v-on:click="registerbtn()"/>
             </div>
             <div>
                 <label class="register_version">@版权所有</label>
@@ -98,146 +98,149 @@
 
 <!-- ------------------------------------------------------------------- -->
 <script>
-    //初始化
-    window.onload = function () {
-        initWindow(); //初始化登录框位置
-        initLogin(); //初始化登录界面
-    };
 
-    //初始化登录框位置（垂直居中、水平4/7）
-    function initWindow() {
-        var middle = 3;
-        var colorNum = 200;
-        var clientHeight = document.documentElement.clientHeight;
-        var clientWidth = document.documentElement.clientWidth;
-        var content = document.getElementsByClassName('content')[0];
-        var screen = document.getElementsByClassName('screen')[0];
-        var title = document.getElementsByClassName('title')[0];
-        var bodys = document.getElementsByTagName('body')[0];
-        bodys.style.cssText = "background-size: " + clientWidth + "px auto;";
-        content.style.cssText = "margin:" + (clientHeight - content.clientHeight) / 2 + "px " +
-            clientWidth * 4 / 7 + "px " +
-            (clientHeight - content.clientHeight) / 2 + "px;";
-        screen.style.cssText = "margin:" + (content.clientHeight - screen.clientHeight) / 2 + "px " +
-            (clientWidth * 4 / 7 - screen.clientWidth) / 2 + "px " +
-            (content.clientHeight - screen.clientHeight) / 2 + "px;";
-        setInterval(function () {
-            colorNum += middle;
-            if (colorNum > 185) {
-                middle = -3;
-            } else if (colorNum < 80) {
-                middle = 3;
-            }
-            title.style.cssText = "color:rgb(255," + colorNum + ", 0)";
-        }, 30);
-    }
-
-    //初始化登录界面
-    function initLogin() {
-        var textNum = document.getElementById('TestNum');
-        var liArr = document.getElementsByTagName('li');
-        var divArr = document.getElementsByClassName("page")[0].getElementsByClassName("childpage");
-        textNum.onclick = function () {
-            textNum.value = TestNum();
-        }
-        for (var i = 0; i < liArr.length; i++) {
-            liArr[i].index = i;
-            liArr[i].onclick = function () {
-                textNum.value = TestNum();
-                for (var j = 0; j < divArr.length; j++) {
-                    liArr[j].style.cssText = "background-color:rgba(255, 255, 255, 0.2);";
-                    divArr[j].style.display = "none";
-                }
-                liArr[this.index].style.cssText = "background-color:rgba(255, 255, 255, 0);";
-                divArr[this.index].style.display = "block";
-            }
-        }
-    }
-
-    //更新验证码
-    function TestNum() {
-        var testNum = "";
-        var selectChar = new Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l',
-            'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z');
-        for (var i = 0; i < 4; i++) {
-            var charIndex = Math.floor(Math.random() * 36);
-            testNum += selectChar[charIndex];
-        }
-        return testNum;
-    }
-
-    //登录账号和密码信息验证
-    function loginbtn() {
-        var user_name = $(".login_page").find("#userName1").val();
-        var user_pwd = $(".login_page").find("#passWord1").val();
-        var login_error = $(".login_error");
-        if ((user_name == "") || (user_pwd == "")) {
-            login_error.text("账号和密码不能为空");
-        } else {
-            login_error.text("");
-            $.ajax({
-                type: "post",
-                url: url + "/user/login",
-                data: {
-                    user_name: user_name,
-                    user_pwd: user_pwd
+    new Vue({
+            el: '.content',
+            data: {
+            },
+            mounted() {
+                this.initWindow();
+                this.initLogin();
+            },
+            methods: {
+                //初始化登录框位置（垂直居中、水平4/7）
+                initWindow: () => {
+                    let middle = 3;
+                    let colorNum = 200;
+                    const clientHeight = document.documentElement.clientHeight;
+                    const clientWidth = document.documentElement.clientWidth;
+                    const content = document.getElementsByClassName('content')[0];
+                    const screen = document.getElementsByClassName('screen')[0];
+                    const title = document.getElementsByClassName('title')[0];
+                    const bodys = document.getElementsByTagName('body')[0];
+                    bodys.style.cssText = "background-size: " + clientWidth + "px auto;";
+                    content.style.cssText = "margin:" + (clientHeight - content.clientHeight) / 2 + "px " +
+                        clientWidth * 4 / 7 + "px " +
+                        (clientHeight - content.clientHeight) / 2 + "px;";
+                    screen.style.cssText = "margin:" + (content.clientHeight - screen.clientHeight) / 2 + "px " +
+                        (clientWidth * 4 / 7 - screen.clientWidth) / 2 + "px " +
+                        (content.clientHeight - screen.clientHeight) / 2 + "px;";
+                    setInterval(function () {
+                        colorNum += middle;
+                        if (colorNum > 185) {
+                            middle = -3;
+                        } else if (colorNum < 80) {
+                            middle = 3;
+                        }
+                        title.style.cssText = "color:rgb(255," + colorNum + ", 0)";
+                    }, 30);
                 },
-                dataType: "json",
-                success: function (obj) {
-                    if (obj.msg == "fail") {
-                        // sessionStorage.removeItem('userJson');
-                        login_error.text('账号或密码错误!');
-                    } else {
-                        localStorage.setItem("userJson", JSON.stringify(obj.data));
-                        // sessionStorage.set
-                        window.location.href = "mainPage";
+
+                //初始化登录界面
+                initLogin: () => {
+                    const liArr = document.getElementsByTagName('li');
+                    const divArr = document.getElementsByClassName("page")[0].getElementsByClassName("childpage");
+
+                    for (let i = 0; i < liArr.length; i++) {
+                        liArr[i].index = i;
+                        liArr[i].onclick =  function (){
+                            for (let j = 0; j < divArr.length; j++) {
+                                liArr[j].style.cssText = "background-color:rgba(255, 255, 255, 0.2);";
+                                divArr[j].style.display = "none";
+                            }
+                            liArr[this.index].style.cssText = "background-color:rgba(255, 255, 255, 0);";
+                            divArr[this.index].style.display = "block";
+                        }
                     }
+                    this.TestNum();
                 },
-                error: function () {
-                    alert("network error!");
-                }
-            });
-        }
-    }
+                //更新验证码
+                TestNum: () => {
+                    var testNum = "";
+                    var selectChar = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l',
+                        'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+                    for (let i = 0; i < 4; i++) {
+                        const charIndex = Math.floor(Math.random() * 36);
+                        testNum += selectChar[charIndex];
+                    }
+                    $("#TestNum").val(testNum);
+                    return testNum;
+                },
 
-    //注册账号和密码逻信息验证
-    function registerbtn() {
-        var textNum = document.getElementById('TestNum');
-        var user_name = $(".register_page").find("#UserName").val();
-        var user_pwd = $(".register_page").find("#PassWord").val();
-        var user_email = $(".register_page").find("#Email").val();
-        var register_error = $(".register_error");
-        var test = $("#Test").val();
-        var testbtn = $("#TestNum").val();
-        if ((user_name == "") || (user_pwd == "") || (user_email == "")) {
-            register_error.text("账号和密码和邮箱不能为空");
-            textNum.value = TestNum();
-        } else if ((test == "") || test != testbtn) {
-            register_error.text("验证码错误");
-            textNum.value = TestNum();
-        } else {
-            register_error.text("");
-            $.ajax({
-                type: "post",
-                url: url + "/user/register",
-                data: {
-                    user_name: user_name,
-                    user_pwd: user_pwd,
-                    user_email: user_email
-                },
-                dataType: "json",
-                success: function (data) {
-                    console.log(data);
-                    if (data == "success") {
-                        window.alert("注册成功！");
-                        window.location.href = "login";
+                //登录账号和密码信息验证
+                loginbtn: () => {
+                    var user_name = $(".login_page").find("#userName1").val();
+                    var user_pwd = $(".login_page").find("#passWord1").val();
+                    var login_error = $(".login_error");
+                    if ((user_name === "") || (user_pwd === "")) {
+                        login_error.text("账号和密码不能为空");
                     } else {
-                        register_error.text('该账号已被注册!');
+                        login_error.text("");
+                        $.ajax({
+                            type: "post",
+                            url: url + "/user/login",
+                            data: {
+                                user_name: user_name,
+                                user_pwd: user_pwd
+                            },
+                            dataType: "json",
+                            success: function (obj) {
+                                if (obj.msg == "fail") {
+                                    // sessionStorage.removeItem('userJson');
+                                    login_error.text('账号或密码错误!');
+                                } else {
+                                    localStorage.setItem("userJson", JSON.stringify(obj.data));
+                                    // sessionStorage.set
+                                    window.location.href = "mainPage";
+                                }
+                            },
+                            error: function () {
+                                alert("network error!");
+                            }
+                        });
                     }
                 }
-            });
+                ,
+                //注册账号和密码逻信息验证
+                registerbtn: () => {
+                    var user_name = $(".register_page").find("#UserName").val();
+                    var user_pwd = $(".register_page").find("#PassWord").val();
+                    var user_email = $(".register_page").find("#Email").val();
+                    var register_error = $(".register_error");
+                    var test = $("#Test").val();
+                    var testbtn = $("#TestNum").val();
+                    if ((user_name == "") || (user_pwd == "") || (user_email == "")) {
+                        register_error.text("账号和密码和邮箱不能为空");
+                        this.TestNum();
+                    } else if ((test == "") || test != testbtn) {
+                        register_error.text("验证码错误");
+                        this.TestNum();
+                    } else {
+                        register_error.text("");
+                        $.ajax({
+                            type: "post",
+                            url: url + "/user/register",
+                            data: {
+                                user_name: user_name,
+                                user_pwd: user_pwd,
+                                user_email: user_email
+                            },
+                            dataType: "json",
+                            success: function (data) {
+                                if (data.code === 0) {
+                                    window.alert("注册成功！");
+                                    window.location.href = "loginPage";
+                                } else {
+                                    register_error.text('该账号已被注册!');
+                                }
+                            }
+                        });
+                    }
+                }
+            }
         }
-    }
+    )
+
 
 </script>
 <!-- ------------------------------------------------------------------- -->

@@ -22,7 +22,6 @@ import java.util.List;
 @Controller
 @RequestMapping("/user")
 public class UserController {
-    //@Autowired
     @Resource
     private IUserService userService;
 
@@ -50,10 +49,13 @@ public class UserController {
 
     @RequestMapping("logout")
     @ResponseBody
-    public String logout(HttpServletRequest request) {
+    public JSONObject logout(HttpServletRequest request) {
         HttpSession session = request.getSession();
         session.removeAttribute("user");
-        return "mainPage";
+        JSONObject obj = new JSONObject();
+        obj.put("code", 0);
+        obj.put("msg", "");
+        return obj;
     }
 
     @PostMapping("register")

@@ -14,10 +14,10 @@
     <link rel="stylesheet" type="text/css" href="./static/css/header.css">
     <script src="./static/js/header.js" charset="utf-8"></script>
     <script src="./static/js/Api.js"></script>
-
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
     <script src="./static/layui/layui.js" charset="utf-8"></script>
     <link rel="stylesheet" href="./static/layui/css/layui.css" media="all">
-    <title>鹰眼电影</title>
+    <title>小站电影</title>
 </head>
 <body>
  	<!-- 导航栏 -->
@@ -31,8 +31,8 @@
                     <ul>
                         <li><a href="mainPage">首页</a></li>
                         <li class="active"><a href="movieList">电影</a></li>
-                        <li><a href="javascript:void(0)">影院</a></li>
-                        <li><a href="javascript:void(0)">榜单</a></li>
+<%--                        <li><a href="javascript:void(0)">影院</a></li>--%>
+<%--                        <li><a href="javascript:void(0)">榜单</a></li>--%>
                     </ul>
                 </div>
                 <div class="app-download">

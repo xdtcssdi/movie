@@ -1,12 +1,6 @@
 <%@page import="com.movie.entity.User"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%
-	User user = (User)request.getSession().getAttribute("user");
-	if(user == null){
-		response.sendRedirect("login");
-	}
-%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,7 +19,7 @@
     <script src="./static/js/Api.js"></script>
     <script src="./static/layui/layui.js" charset="utf-8"></script>
     <link rel="stylesheet" href="./static/layui/css/layui.css" media="all">
-    <title>鹰眼电影-支付成功</title>
+    <title>小站电影-支付成功</title>
 </head>
 <body>
 

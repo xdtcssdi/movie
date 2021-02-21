@@ -20,7 +20,7 @@
 
     <script src="./static/layui/layui.js" charset="utf-8"></script>
     <link rel="stylesheet" href="./static/layui/css/layui.css" media="all">
-    <title>鹰眼电影-电影</title>
+    <title>小站电影-电影</title>
 </head>
 <body>
     <!-- ------------------------------------------------------------------- -->
@@ -129,7 +129,7 @@
 
         //初始化电影列表
         function initMovieList(){
-            if(getUrlParams("type") == "全部" || getUrlParams("type") == null){
+            if(getUrlParams("type") === "全部" || getUrlParams("type") == null){
                 $.ajax({
                     type: "post",
                     url: url + "/movie/sortAllMovies",

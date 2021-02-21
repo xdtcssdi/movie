@@ -1,12 +1,6 @@
 <%@page import="com.movie.entity.User"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%
-	User user = (User)request.getSession().getAttribute("user");
-	if(user == null){
-		response.sendRedirect("/loginPage");
-	}
-%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,7 +19,7 @@
     <script src="./static/js/Api.js"></script>
     <script src="./static/layui/layui.js" charset="utf-8"></script>
     <link rel="stylesheet" href="./static/layui/css/layui.css" media="all">
-    <title>鹰眼电影-个人中心</title>
+    <title>小站电影-个人中心</title>
 </head>
 <body>
     <!-- ------------------------------------------------------------------- -->
@@ -99,6 +93,9 @@
         user = eval('(' + user + ')');
         var file;
 
+
+
+
         window.onload = function(){
             initHeader();
             initCard(); //初始化选项卡
@@ -129,7 +126,7 @@
             for(var p=0;p<aArr.length;p++){
                 divArr[p].style.display = "none";
                 aArr[p].style.cssText = "background-color: #f4f3f4; color: #333;";
-                if(localStorage.getItem("usercardId")==p){
+                if(localStorage.getItem("usercardId")===p){
                     divArr[p].style.display = "block";
                     aArr[p].style.cssText = "background-color: #ed3931; color: #fff;";
                 }
@@ -150,7 +147,6 @@
                     user_name: user.user_name
                 },
                 success:function (obj) {
-                    // console.log(obj);
                     for(var i=0;i<obj.data.length;i++){
                       //  var order_time = obj.data[i].order_schedule.schedule_startTime.slice(0,10);
                         var StateText;
@@ -196,20 +192,20 @@
             var Year,Month,Day,Hour,Mintue,flag=0;
             var myDate = new Date();
             var OldTime, NowTime, OldDate, NowDate;
-            if(order_state=="退票中"){
+            if(order_state==="退票中"){
                 layui.use(['layer'], function(){
                 var layer = layui.layer;
                     layer.alert('该订单正处于退票状态！',{icon: 0,offset: clientHeight/5});
                 });
             }
-            else if(order_state=="已退票"){
+            else if(order_state==="已退票"){
                 layui.use(['layer'], function(){
                 var layer = layui.layer;
                     layer.alert('该订单已完成退票！',{icon: 0,offset: clientHeight/5});
                 });
             }
             else{
-                if(myDate.getHours()==23){
+                if(myDate.getHours()===23){
                     flag=1;
                 }
                 OldTime = order_time;
@@ -244,7 +240,7 @@
                                         order_id: order_id
                                     },
                                     success:function (obj) {
-                                        if(obj.code == 0){
+                                        if(obj.code === 0){
                                             window.alert("退票已申请");
                                         }
                                         else{
@@ -265,7 +261,7 @@
         function initInformation(){
             var avatarBody = $(".two").find(".avatar-body");
             var roletext;
-            if(user.user_role==1){
+            if(user.user_role===1){
                 roletext = "管理员";
             }
             else{
@@ -327,13 +323,12 @@
             });
         }
         //保存信息修改
+
         function saveBtn(){
             var formData = new FormData();
             var user_name = $('#userName').val();
             var user_role = $('#role').val();
             var user_email = $('#email').val();
-            console.log(file);
-            console.log(user_name+ "," + user_role + "," + user_email);
             if(user_role === "会员"){
                 user_role = 0;
             }else{
@@ -418,8 +413,7 @@
                 user_new_password = $('#newPassword').val(),
                 user_repeat_password = $('#repeatPassword').val();
             var user_id = user.user_id;
-            console.log(user_old_password+ "," + user_new_password + "," + user_repeat_password);
-            if(user_old_password == "" || user_new_password == "" || user_repeat_password == ""){
+            if(user_old_password === "" || user_new_password === "" || user_repeat_password === ""){
                 layui.use(['layer'], function(){
                 var layer = layui.layer;
                     layer.alert('密码修改信息不能为空，修改失败！',{icon: 0,offset: clientHeight/5},
@@ -429,7 +423,7 @@
                     );
                 });
             }
-            else if(user_old_password != user.user_pwd){
+            else if(user_old_password !== user.user_pwd){
                 layui.use(['layer'], function(){
                 var layer = layui.layer;
                     layer.alert('旧密码输入错误！',{icon: 0,offset: clientHeight/5},
@@ -439,7 +433,7 @@
                     );
                 });
             }
-            else if(user_new_password != user_repeat_password){
+            else if(user_new_password !== user_repeat_password){
                 layui.use(['layer'], function(){
                 var layer = layui.layer;
                     layer.alert('新密码和确认密码不匹配！',{icon: 0,offset: clientHeight/5},
@@ -460,7 +454,7 @@
                         user_id: user_id,
                     },
                     success:function (obj) {
-                        if(obj.code == 0){
+                        if(obj.code === 0){
                             layer.alert('修改成功，请重新登陆！',{icon: 0,offset: clientHeight/5},
                                 function (){
                                     layer.closeAll();

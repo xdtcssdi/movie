@@ -18,7 +18,7 @@
     <script src="./static/js/Api.js"></script>
     <script src="./static/layui/layui.js" charset="utf-8"></script>
     <link rel="stylesheet" href="./static/layui/css/layui.css" media="all">
-    <title>鹰眼电影-支付</title>
+    <title>小站电影-支付</title>
 </head>
 <body>
     <!-- ------------------------------------------------------------------- -->
@@ -159,18 +159,18 @@
             timeMinute.text(localStorage.minute);
             timeSecond.text(localStorage.second);
             setInterval(function(){
-                if(second==0 && minute==0){
+                if(second===0 && minute===0){
                     window.alert("支付时间已过，订单失效！");
                     localStorage.clear();
                 }
-                if((localStorage.second == "NaN") || (localStorage.second == 0 && localStorage.minute == 0))
+                if((localStorage.second === "NaN") || (localStorage.second == 0 && localStorage.minute == 0))
                 {
                     localStorage.minute = 14;
                     localStorage.second = 59;
                 }
                 second = localStorage.second;
                 minute = localStorage.minute; 
-                if(second==0){
+                if(second===0){
                     minute--;
                     second = 60;
                 }
@@ -197,7 +197,7 @@
                 dataType: "json",
                 success: function(obj){
                 	localStorage.removeItem("order");
-                    if(obj.code == 0){
+                    if(obj.code === 0){
                         layui.use(['layer'], function(){
                             var layer = layui.layer;
                             layer.alert('购票成功！',{icon: 0,offset: clientHeight/5},
@@ -243,7 +243,7 @@
             if (name) {
                 for(var i=0;i<url.length;i++) {
                     for (const key in url[i]) {
-                        if (key == name) {
+                        if (key === name) {
                             nameres = url[i][key];
                         }
                     }

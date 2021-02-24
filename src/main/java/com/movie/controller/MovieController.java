@@ -1,6 +1,8 @@
 package com.movie.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.movie.entity.Cinema;
 import com.movie.entity.Movie;
 import com.movie.service.ICinemaService;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -50,22 +53,27 @@ public class MovieController {
     @RequestMapping("findAllMovies")
     @ResponseBody
     public JSONObject findAllMovies() {
+
         JSONObject obj = new JSONObject();
+
         List<Movie> list = movieService.findAllMovies(1);
+
         List<Movie> upcomingList = movieService.findAllMovies(0);
+
         List<Movie> offList = movieService.sortMovieByBoxOffice();
-        String type[] = {"喜剧", "动作", "爱情", "动画", "科幻", "惊悚", "冒险", "犯罪", "悬疑"};
+        String[] type = {"喜剧", "动作", "爱情", "动画", "科幻", "惊悚", "冒险", "犯罪", "悬疑"};
         ArrayList<Object> typeArr = new ArrayList<Object>();
-        for (int i = 0; i < type.length; i++) {
-            List<Movie> movieList = this.movieService.findMoviesLikeType(type[i]);
+        for (String s : type) {
+            List<Movie> movieList = this.movieService.findMoviesLikeType(s);
             float boxOffice = 0;
-            for (int j = 0; j < movieList.size(); j++) {
-                boxOffice += movieList.get(j).getMovie_boxOffice();
+            for (Movie movie : movieList) {
+                boxOffice += movie.getMovie_boxOffice();
             }
             JSONObject typeJson = new JSONObject();
-            typeJson.put(type[i], boxOffice);
+            typeJson.put(s, boxOffice);
             typeArr.add(typeJson);
         }
+
         obj.put("code", 0);
         obj.put("count", list.size());
         obj.put("upcomingCount", upcomingList.size());
@@ -84,6 +92,18 @@ public class MovieController {
         obj.put("code", 0);
         obj.put("count", list.size());
         obj.put("data", list);
+        return obj;
+    }
+
+    @RequestMapping("search")
+    @ResponseBody
+    public JSONObject search(@RequestParam("searchMovie") String searchMovie){
+        System.out.println(searchMovie);
+        List<Movie> moviesLikeName = movieService.findMoviesLikeName(searchMovie);
+        JSONObject obj = new JSONObject();
+        obj.put("count", moviesLikeName.size());
+        obj.put("code", 0);
+        obj.put("data", moviesLikeName);
         return obj;
     }
 
@@ -108,9 +128,13 @@ public class MovieController {
 
     @RequestMapping("sortAllMovies")
     @ResponseBody
-    public JSONObject sortAllMovies(@RequestParam("order") String order) {
+    public JSONObject sortAllMovies(@RequestParam(value="page",defaultValue="1")Integer page,
+                                    @RequestParam(value="pageSize",defaultValue="50")Integer pageSize ,
+                                    @RequestParam("order") String order) {
         JSONObject obj = new JSONObject();
-        List<Movie> list = new ArrayList<Movie>();
+        List<Movie> list = new ArrayList<>();
+        PageHelper.startPage(page,pageSize);//分页起始码以及每页页数
+
         switch (order) {
             case "热门":
                 list = movieService.sortMovieByCount();
@@ -122,9 +146,12 @@ public class MovieController {
                 list = movieService.sortMovieByScore();
                 break;
         }
+
+        PageInfo<Movie> pageInfo= new PageInfo<>(list, 5);
+
         obj.put("code", 0);
-        obj.put("count", list.size());
-        obj.put("data", list);
+        obj.put("count", pageInfo.getPageSize());
+        obj.put("data", pageInfo.getList());
         return obj;
     }
 

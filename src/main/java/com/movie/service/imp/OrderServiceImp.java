@@ -142,7 +142,7 @@ public class OrderServiceImp implements IOrderService{
 	
 	public PageInfo<Order> findAllOrdersBySplitPage(Integer page, Integer limit, String keyword) {
 		PageHelper.startPage(page, limit);
-		List<Order> list = new ArrayList<Order>();
+		List<Order> list;
 		if(keyword != null && !keyword.trim().equals("")) {
 			list = this.orderMapper.findOrdersByUserName(keyword);
 		}else {

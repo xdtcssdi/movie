@@ -84,7 +84,8 @@ public class MovieServiceImp implements IMovieService{
 	
 	@Transactional(propagation=Propagation.REQUIRED,readOnly=true)
 	
-	public List<Movie> findMoviesLikeName(String name) {
+	public List<Movie> findMoviesLikeName(String name){
+
 		return this.movieMapper.findMoviesLikeName(name);
 	}
 

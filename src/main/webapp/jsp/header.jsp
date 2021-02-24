@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%> 
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,7 +47,7 @@
                 </div>
                 <form action="">
                     <input name="searchMovie" class="search" type="search" maxlength="32" placeholder="找影视剧、影人、影院" autocomplete="off">
-                <input class="submit" type="submit" value="">
+                    <input class="submit" type="submit" value="">
                 </form>
             </div>
         </div>
@@ -59,7 +59,7 @@
             initHeader();
         }
 
-        
+
     </script>
 </body>
 </html>

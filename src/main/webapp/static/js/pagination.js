@@ -1,4 +1,4 @@
-function Paging(options) {
+function Paging(options, callback) {
     let defaultValue = {
         total: 0,
         current: 1,
@@ -6,14 +6,14 @@ function Paging(options) {
         prevText: '上一页',
         nextText: '下一页',
         lastText: '尾页',
-        PageSize: 10,
+        PageSize: 50,
         PageNum: 5,
         container: document.getElementsByClassName('paging')[0]
     }
 
     this.options = Object.assign({}, defaultValue, options);
     this.show();
-    this.PageClick()
+    this.PageClick(callback)
 }
 
 Paging.prototype.show = function () {
@@ -37,7 +37,8 @@ Paging.prototype.show = function () {
 
     let span = document.createElement('span');
     span.innerHTML = `<i>${this.options.current}</i> /<i>${PageTotalNum}</i>`;
-    this.options.container.appendChild(span)
+    this.options.container.appendChild(span);
+
 }
 
 Paging.prototype.createNumElement = function () {
@@ -70,22 +71,27 @@ Paging.prototype.createElement = function (specialStyle, content) {
 }
 
 Paging.prototype.getPageTotalNum = function () {
-    return Math.ceil(this.options.total / this.options.PageSize)
+    return this.options.PageSize
 }
 
-Paging.prototype.PageClick = function () {
+Paging.prototype.PageClick = function (callback) {
     let _this = this;
     let PageTotalNum = this.getPageTotalNum();
     this.options.container.addEventListener('click', function (e) {
         if (e.target.classList.contains('first')) {
+            callback(1)
             _this.toPage(1);
         } else if (e.target.classList.contains('prev')) {
+            callback(_this.options.current - 1);
             _this.toPage(_this.options.current - 1);
         } else if (e.target.classList.contains('next')) {
+            callback(_this.options.current + 1);
             _this.toPage(_this.options.current + 1);
         } else if (e.target.classList.contains('last')) {
+            callback(PageTotalNum);
             _this.toPage(PageTotalNum);
         } else if (e.target.classList.contains('pagingDiv')) {
+            callback(+e.target.innerText);
             _this.toPage(+e.target.innerText);
         }
     })

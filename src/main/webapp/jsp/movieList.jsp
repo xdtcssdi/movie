@@ -93,21 +93,15 @@
 
             <div class="movies-list">
                 <ul class="movie-list">
-
                 </ul>
             </div>
-
-
         </div>
-
-
-
     </div>
 
 </div>
-<div align="center">
-<div class="paging"></div>
-
+<div style="display: flex;justify-content: center;align-items: center;">
+    <div class="paging"></div>
+</div>
 </div>
 <!-- 脚 -->
 <jsp:include page="footer.jsp"/>
@@ -118,7 +112,7 @@
 
     let paging = new Paging({
         total: 100,
-    })
+    }, initMovieList)
 
     var clientHeight = document.documentElement.clientHeight;
     var clientWidth = document.documentElement.clientWidth;
@@ -132,7 +126,7 @@
         initHeader();
         initParams(); //参数
         initTags(); //标签
-        initMovieList(); //电影列表
+        initMovieList(1); //电影列表
         initClass(); //布局
     }
 
@@ -144,15 +138,16 @@
     }
 
     //初始化电影列表
-    function initMovieList() {
+    function initMovieList(page) {
+        $(".movie-list")[0].innerHTML = "";
         if (getUrlParams("searchMovie") !== undefined) {
             $.ajax({
                 type: "post",
                 url: url + "/movie/search?searchMovie=" + getUrlParams("searchMovie"),
                 dataType: "json",
                 success: function (obj) {
-                    console.log(obj);
-                    for (var i = 0; i < obj.count; i++) {
+                    paging.options.PageSize = obj.count
+                    for (var i = 0; i < obj.data.length; i++) {
                         movielist.append(
                             "<li> <div class=\"movie-item\"> <a href=\"buyTickets?movie_id=" + obj.data[i].movie_id + "\" " + "target=\"_blank\"> <div class=\"movie-poster\"> <img src=\"" + obj.data[i].movie_picture + "\"> </div> </a>" +
                             "<div class=\"channel-action channel-action-sale\"> <a>购票<a/> </div> <div class=\"movie-ver\"></div> </div>" +
@@ -170,11 +165,14 @@
         } else if (getUrlParams("type") === "全部" || getUrlParams("type") == null) {
             $.ajax({
                 type: "post",
-                url: url + "/movie/sortAllMovies?page=" + paging.options.current,
+                url: url + "/movie/sortAllMovies?page=" + page,
                 data: {order: order},
                 dataType: "json",
                 success: function (obj) {
-                    for (var i = 0; i < obj.count; i++) {
+                    console.log(obj)
+                    paging.options.PageSize = obj.count
+                    let movielist = $(".movie-list");
+                    for (var i = 0; i < obj.data.length; i++) {
                         movielist.append(
                             "<li> <div class=\"movie-item\"> <a href=\"buyTickets?movie_id=" + obj.data[i].movie_id + "\" " + "target=\"_blank\"> <div class=\"movie-poster\"> <img src=\"" + obj.data[i].movie_picture + "\"> </div> </a>" +
                             "<div class=\"channel-action channel-action-sale\"> <a>购票<a/> </div> <div class=\"movie-ver\"></div> </div>" +
@@ -192,13 +190,15 @@
         } else {
             $.ajax({
                 type: "post",
-                url: url + "/movie/findMoviesByType",
+                url: url + "/movie/findMoviesByType?page=" + page,
                 data: {type: type, year: year, area: area},
                 dataType: "json",
                 success: function (obj) {
                     console.log(obj);
+                    let movielist = $(".movie-list");
+                    paging.options.PageSize = obj.count
                     if (obj.count > 0) {
-                        for (var i = 0; i < obj.count; i++) {
+                        for (var i = 0; i < obj.data.length; i++) {
                             movielist.append(
                                 "<li> <div class=\"movie-item\"> <a href=\"buyTickets?movie_id=" + obj.data[i].movie_id + "\" " + "target=\"_blank\"> <div class=\"movie-poster\"> <img src=\"" + obj.data[i].movie_picture + "\"> </div> </a>" +
                                 "<div class=\"channel-action channel-action-sale\"> <a>购票<a/> </div> <div class=\"movie-ver\"></div> </div>" +
@@ -216,7 +216,7 @@
                 error: function () {
                     alert("network error!");
                 }
-            })
+            });
         }
         var radio = $('.sort-control-group');
         for (var i = 0; i < radio.length; i++) {
@@ -247,7 +247,7 @@
                 $('.movie-list').remove();
                 $.ajax({
                     type: "post",
-                    url: url + "/movie/sortAllMovies",
+                    url: url + "/movie/sortAllMovies?page" + page,
                     data: {order: order},
                     dataType: "json",
                     success: function (obj) {

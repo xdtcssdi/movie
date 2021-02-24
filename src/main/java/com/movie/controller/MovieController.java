@@ -109,7 +109,9 @@ public class MovieController {
 
     @RequestMapping("findMoviesByType")
     @ResponseBody
-    public JSONObject findMoviesByType(@RequestParam("type") String type,
+    public JSONObject findMoviesByType(@RequestParam(value="page",defaultValue="1")Integer page,
+                                       @RequestParam(value="pageSize",defaultValue="50")Integer pageSize,
+                                       @RequestParam("type") String type,
                                        @RequestParam("area") String area,
                                        @RequestParam("year") String year) {
         JSONObject obj = new JSONObject();
@@ -119,10 +121,13 @@ public class MovieController {
             year = "";
 
         System.out.println(type + " " + area + " " + year);
+        PageHelper.startPage(page,pageSize);//分页起始码以及每页页数
+
         List<Movie> list = movieService.findMoviesLikeType2(type, area, year);
+        PageInfo<Movie> pageInfo= new PageInfo<>(list);
         obj.put("code", 0);
-        obj.put("count", list.size());
-        obj.put("data", list);
+        obj.put("count", pageInfo.getPages());
+        obj.put("data", pageInfo.getList());
         return obj;
     }
 
@@ -147,10 +152,9 @@ public class MovieController {
                 break;
         }
 
-        PageInfo<Movie> pageInfo= new PageInfo<>(list, 5);
-
+        PageInfo<Movie> pageInfo= new PageInfo<>(list);
         obj.put("code", 0);
-        obj.put("count", pageInfo.getPageSize());
+        obj.put("count", pageInfo.getPages());
         obj.put("data", pageInfo.getList());
         return obj;
     }

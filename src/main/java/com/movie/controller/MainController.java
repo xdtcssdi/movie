@@ -10,9 +10,10 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class MainController {
     @GetMapping("/")
-    public String index(){
+    public String index() {
         return "mainPage";
     }
+
     @GetMapping("/mainPage")
     public String mainPage() {
         return "mainPage";
@@ -24,47 +25,57 @@ public class MainController {
     }
 
     @GetMapping("/buySeat")
-    public String buySeat(){
+    public String buySeat() {
         return "buySeat";
     }
+
     @GetMapping("/buyTickets")
-    public String buyTickets(){
+    public String buyTickets() {
         return "buyTickets";
     }
+
     @GetMapping("/center")
-    public String center(){
+    public String center() {
         return "center";
     }
+
     @GetMapping("/footer")
-    public String footer(){
+    public String footer() {
         return "footer";
     }
+
     @GetMapping("/header")
-    public String header(){
+    public String header() {
         return "header";
     }
+
     @GetMapping("/manage")
-    public String manage(){
+    public String manage() {
         return "manage";
     }
+
     @GetMapping("/movieDetail")
-    public String movieDetail(){
+    public String movieDetail() {
         return "movieDetail";
     }
+
     @GetMapping("/movieList")
-    public String movieList(){
+    public String movieList() {
         return "movieList";
     }
+
     @GetMapping("/pay")
-    public String pay(){
+    public String pay() {
         return "pay";
     }
+
     @GetMapping("/payStatus")
-    public String payStatus(){
+    public String payStatus() {
         return "payStatus";
     }
+
     @GetMapping("/selectSeat")
-    public String selectSeat(){
+    public String selectSeat() {
         return "selectSeat";
     }
 }

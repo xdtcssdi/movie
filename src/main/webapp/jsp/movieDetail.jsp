@@ -573,7 +573,7 @@
                 , function () {
                     $.ajax({
                         type: 'post',
-                        url: url + "/comment/deleteComemnt",
+                        url: url + "/comment/deleteComment",
                         dataType: 'json',
                         data: {
                             comment_id: comment_id,

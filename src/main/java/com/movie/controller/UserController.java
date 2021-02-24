@@ -91,11 +91,10 @@ public class UserController {
 
         if (rs > 0) {
             obj.put("code", 0);
-            return obj;
         } else {
             obj.put("code", 1);
-            return obj;
         }
+        return obj;
     }
 
     @RequestMapping("modifyUserPwd")

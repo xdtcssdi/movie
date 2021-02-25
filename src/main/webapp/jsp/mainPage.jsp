@@ -298,13 +298,12 @@
                 var HotNum = $(".hot-title");
                 var OnNum = $(".on-title");
                 var TempName;
-
                 $.ajax({
-                    type: 'post',
+                    type: 'get',
                     url: url + "/movie/findAllMovies",
                     dataType: 'json',
-                    data: {},
                     success: function (obj) {
+                        console.log(obj);
                         HotNum.append("<span class=\"textcolor_red\">正在热映（" + obj.data.length + "部）</span>");
                         if (obj.data.length < 8) {
                             ListLength = obj.data.length;
@@ -393,7 +392,7 @@
                         }
                         var BoxOffice = $(".boxOffice");
                         for (var i = 0; i < TempLength; i++) {
-                            if (i == 0) {
+                            if (i === 0) {
                                 BoxOffice.append(
                                     "<li class=\"ranking-item ranking-top ranking-index-1\">" +
                                     "<a href=\"movieDetail?movie_id=" + obj.sort[i].movie_id + "\"" + " target=\"_blank\">" +

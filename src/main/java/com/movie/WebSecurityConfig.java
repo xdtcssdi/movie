@@ -28,12 +28,15 @@ public class WebSecurityConfig extends WebMvcConfigurerAdapter {
 //        addInterceptor.excludePathPatterns("/register");
 
         // 拦截配置
-        addInterceptor.addPathPatterns("");
-        addInterceptor.addPathPatterns("/");
-        addInterceptor.addPathPatterns("/schedule/**");
-        addInterceptor.addPathPatterns("/order/**");
-        addInterceptor.addPathPatterns("/comment/**");
-        addInterceptor.addPathPatterns("#");
+        addInterceptor.addPathPatterns("/**");
+        addInterceptor.excludePathPatterns("/loginPage");
+        addInterceptor.excludePathPatterns("/mainPage");
+        addInterceptor.excludePathPatterns("/static/**");
+        addInterceptor.excludePathPatterns("/upload/**");
+        addInterceptor.excludePathPatterns("/");
+        addInterceptor.excludePathPatterns("/movie/**");
+        addInterceptor.excludePathPatterns("/user/login");
+        addInterceptor.excludePathPatterns("/user/register");
     }
 
     private class SecurityInterceptor extends HandlerInterceptorAdapter {
@@ -41,7 +44,7 @@ public class WebSecurityConfig extends WebMvcConfigurerAdapter {
         @Override
         public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
                 throws Exception {
-            System.out.println("拦截");
+            System.out.println("拦截" + request.getRequestURI());
             HttpSession session = request.getSession();
             if (session.getAttribute("user") != null) {
                 return true;
@@ -56,7 +59,7 @@ public class WebSecurityConfig extends WebMvcConfigurerAdapter {
         public void afterCompletion(
                 HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
                 throws Exception {
-            System.out.println("拦截2");
+            System.out.println("拦截" + request.getRequestURI());
             HttpSession session = request.getSession();
             if (session.getAttribute("user") == null) {
                 // 跳转登录

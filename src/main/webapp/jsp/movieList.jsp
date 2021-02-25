@@ -147,6 +147,7 @@
                 dataType: "json",
                 success: function (obj) {
                     paging.options.PageSize = obj.count
+                    paging.show()
                     for (var i = 0; i < obj.data.length; i++) {
                         movielist.append(
                             "<li> <div class=\"movie-item\"> <a href=\"buyTickets?movie_id=" + obj.data[i].movie_id + "\" " + "target=\"_blank\"> <div class=\"movie-poster\"> <img src=\"" + obj.data[i].movie_picture + "\"> </div> </a>" +
@@ -171,6 +172,7 @@
                 success: function (obj) {
                     console.log(obj)
                     paging.options.PageSize = obj.count
+                    paging.show()
                     let movielist = $(".movie-list");
                     for (var i = 0; i < obj.data.length; i++) {
                         movielist.append(
@@ -197,6 +199,7 @@
                     console.log(obj);
                     let movielist = $(".movie-list");
                     paging.options.PageSize = obj.count
+                    paging.show()
                     if (obj.count > 0) {
                         for (var i = 0; i < obj.data.length; i++) {
                             movielist.append(
@@ -344,11 +347,11 @@
     //导入活跃标签
     function inputTags(Str, Active, tags) {
         for (var i = 0; i < Str.length; i++) {
-            if (tags == 0 && i == 0) {
+            if (tags === 0 && i === 0) {
                 Active.push("class=\"active\"");
                 break;
             }
-            if (Str[i] == tags) {
+            if (Str[i] === tags) {
                 Active.push("class=\"active\"");
             } else
                 Active.push(" ");
@@ -378,7 +381,7 @@
     //获取url参数
     function getUrlParams(name) { // 不传name返回所有值，否则返回对应值
         var url = window.location.search;
-        if (url.indexOf('?') == 1) {
+        if (url.indexOf('?') === 1) {
             return false;
         }
         url = url.substr(1);
@@ -396,7 +399,7 @@
         if (name) {
             for (var i = 0; i < url.length; i++) {
                 for (const key in url[i]) {
-                    if (key == name) {
+                    if (key === name) {
                         nameres = url[i][key];
                     }
                 }

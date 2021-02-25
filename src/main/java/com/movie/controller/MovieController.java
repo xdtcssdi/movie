@@ -55,32 +55,28 @@ public class MovieController {
     public JSONObject findAllMovies() {
 
         JSONObject obj = new JSONObject();
-
+        PageHelper.startPage(1,8);//分页起始码以及每页页数
         List<Movie> list = movieService.findAllMovies(1);
+        PageInfo<Movie> pageInfo= new PageInfo<>(list);
+        list = pageInfo.getList();
 
+        PageHelper.startPage(1,8);//分页起始码以及每页页数
         List<Movie> upcomingList = movieService.findAllMovies(0);
+        PageInfo<Movie> pageInfo1= new PageInfo<>(upcomingList);
+        upcomingList = pageInfo1.getList();
 
+        PageHelper.startPage(1,9);//分页起始码以及每页页数
         List<Movie> offList = movieService.sortMovieByBoxOffice();
-        String[] type = {"喜剧", "动作", "爱情", "动画", "科幻", "惊悚", "冒险", "犯罪", "悬疑"};
-        ArrayList<Object> typeArr = new ArrayList<Object>();
-        for (String s : type) {
-            List<Movie> movieList = this.movieService.findMoviesLikeType(s);
-            float boxOffice = 0;
-            for (Movie movie : movieList) {
-                boxOffice += movie.getMovie_boxOffice();
-            }
-            JSONObject typeJson = new JSONObject();
-            typeJson.put(s, boxOffice);
-            typeArr.add(typeJson);
-        }
+        PageInfo<Movie> pageInfo2= new PageInfo<>(offList);
+        offList = pageInfo2.getList();
 
         obj.put("code", 0);
-        obj.put("count", list.size());
-        obj.put("upcomingCount", upcomingList.size());
-        obj.put("data", list);
-        obj.put("data1", upcomingList);
-        obj.put("sort", offList);
-        obj.put("type", typeArr);
+        obj.put("count", Math.min(list.size(), 8));
+        obj.put("upcomingCount", Math.min(upcomingList.size(), 8));
+        obj.put("data", list.subList(0, 8));
+        obj.put("data1", upcomingList.subList(0, Math.min(upcomingList.size(), 8)));
+        obj.put("sort", offList.subList(0, 9));
+
         return obj;
     }
 
